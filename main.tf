@@ -103,7 +103,7 @@ resource "aws_lb_target_group_attachment" "blog_tg_attachment" {
   target_id        = aws_instance.blog.id
   port             = 80
 }
-}
+
 
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
