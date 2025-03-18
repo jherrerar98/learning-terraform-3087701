@@ -91,20 +91,18 @@ module "alb" {
     }
   }
 
-  target_groups = {
-    ex-instance = {
-      name_prefix      = "blog"
-      protocol         = "HTTP"
-      port             = 80
-      target_type      = "instance"
-      target_id        = aws_instance.blog.id
-    }
-  }
+  resource "aws_lb_target_group" "blog_tg" {
+  name     = "blog-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = module.blog_vpc.vpc_id
+}
 
-  tags = {
-    Environment = "Development"
-    Project     = "Example"
-  }
+resource "aws_lb_target_group_attachment" "blog_tg_attachment" {
+  target_group_arn = aws_lb_target_group.blog_tg.arn
+  target_id        = aws_instance.blog.id
+  port             = 80
+}
 }
 
 module "blog_sg" {
